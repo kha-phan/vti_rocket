@@ -86,38 +86,15 @@ HAVING		COUNT(A.PositionID)	=	(SELECT 	MIN(CountP)
 												FROM		Position P
 												INNER JOIN 	`Account` A ON P.PositionID = A.PositionID
 												GROUP BY	P.PositionID) AS MinCountP);
-
+SET sql_mode = '';
 -- Question 11: thống kê mỗi phòng ban có bao nhiêu dev, test, scrum master, PM
-SELECT
-    t1.DepartmentID,
-    t1.PositionID,
-    IF((t2.number_of_account IS NULL),
-        0,
-        t2.number_of_account) AS number_of_account
-FROM
-    (SELECT
-        d.DepartmentID, p.PositionID
-    FROM
-        department d
-    CROSS JOIN `position` p
-    WHERE
-        p.PositionName IN ('Developer' , 'Tester', 'Scrum Master', 'Project Manager')
-    ORDER BY d.DepartmentID , p.PositionID) AS t1
-        LEFT JOIN
-    (SELECT
-        d.DepartmentID,
-            p.PositionID,
-            COUNT(a.AccountID) AS number_of_account
-    FROM
-        position p
-    LEFT JOIN `account` a ON p.PositionID = a.PositionID
-    RIGHT JOIN department d ON a.DepartmentID = d.DepartmentID
-    WHERE
-        p.PositionName IN ('Developer' , 'Tester', 'Scrum Master', 'Project Manager')
-    GROUP BY d.DepartmentID , p.PositionID) AS t2 ON t1.DepartmentID = t2.DepartmentID
-        AND t1.PositionID = t2.PositionID
-GROUP BY t1.DepartmentID , t1.PositionID
-ORDER BY t1.DepartmentID , t1.PositionID;
+SELECT 		D.DepartmentID, D.DepartmentName, P.PositionName, COUNT(P.PositionID) AS 'SO LUONG'
+FROM		Position P INNER JOIN `Account` A 
+ON			P.PositionID = A.PositionID
+INNER JOIN	Department D
+ON			A.DepartmentID = D.DepartmentID
+GROUP BY	A.DepartmentID
+ORDER BY	A.DepartmentID ASC;
 
 -- Question 12: Lấy thông tin chi tiết của câu hỏi bao gồm: thông tin cơ bản của question, loại câu hỏi, ai là người tạo ra câu hỏi, câu trả lời là gì, …
 SELECT 		T.TypeName AS 'LOAI CAU HOI', Q.CreatorID AS 'ID NGUOI TAO', Q.Content AS 'CAU HOI', A.Content AS 'CAU TRA LOI', Q.CreateDate AS 'NGAY TAO'

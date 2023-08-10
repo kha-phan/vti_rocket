@@ -29,7 +29,7 @@ CREATE TABLE `Account2` (
     `FullName` VARCHAR(50) NOT NULL,
     `DepartmentID` TINYINT UNSIGNED NOT NULL,
     `PositionID` TINYINT UNSIGNED NOT NULL,
-    `CreateDate` DATETIME DEFAULT NOW (),
+    `CreateDate` DATETIME DEFAULT NOW(),
     FOREIGN KEY (`DepartmentID`)
         REFERENCES Department2 (`DepartmentID`),
     FOREIGN KEY (`PositionID`)
@@ -42,7 +42,7 @@ CREATE TABLE `Group2` (
     `GroupID` TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `GroupName` NVARCHAR(50) NOT NULL,
     `CreatorID` TINYINT UNSIGNED NOT NULL UNIQUE KEY,
-    `CreateDate` DATETIME DEFAULT NOW ()
+    `CreateDate` DATETIME DEFAULT NOW()
 );
 
 -- Create table 5: GroupAccount2
@@ -51,7 +51,7 @@ CREATE TABLE `GroupAccount2` (
     `GroupAccountID` TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `GroupID` TINYINT UNSIGNED NOT NULL,
     `AccountID` TINYINT UNSIGNED NOT NULL,
-    `JoinDate` DATETIME DEFAULT NOW (),
+    `JoinDate` DATETIME DEFAULT NOW(),
     FOREIGN KEY (`AccountID`)
         REFERENCES Account2 (`AccountID`),
     FOREIGN KEY (`GroupID`)
@@ -80,7 +80,7 @@ CREATE TABLE `Question2` (
     `CategoryID` TINYINT UNSIGNED NOT NULL,
     `TypeID` TINYINT UNSIGNED NOT NULL,
     `CreatorID` TINYINT UNSIGNED NOT NULL UNIQUE KEY,
-    `CreateDate` DATETIME NOT NULL DEFAULT NOW (),
+    `CreateDate` DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (`CategoryID`)
         REFERENCES CategoryQuestion2 (`CategoryID`),
     FOREIGN KEY (`TypeID`)
@@ -107,7 +107,7 @@ CREATE TABLE `Exam2` (
     `CategoryID` TINYINT UNSIGNED NOT NULL,
     `Duration` TINYINT UNSIGNED NOT NULL,
     `CreatorID` TINYINT UNSIGNED NOT NULL UNIQUE KEY,
-    `CreateDate` DATETIME NOT NULL DEFAULT NOW (),
+    `CreateDate` DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (`CategoryID`)
         REFERENCES CategoryQuestion2 (`CategoryID`)
 );

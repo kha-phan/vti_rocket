@@ -1,11 +1,19 @@
+USE `TestingSystem`;
 /*================================ Query Data =================================*/
-/*======================================================================================*/
-
 -- Question 1: Viết lệnh để lấy ra danh sách nhân viên và thông tin phòng ban của họ
-SELECT 		A.Email, A.Username	, A.FullName, A.PositionID, A.CreateDate, A.DepartmentID, D.DepartmentName
-FROM 		`Account` A
-INNER JOIN 	Department D	ON 	A.DepartmentID = D.DepartmentID;
-
+SELECT 
+    A.Email,
+    A.Username,
+    A.FullName,
+    A.PositionID,
+    A.CreateDate,
+    A.DepartmentID,
+    D.DepartmentName
+FROM
+    Account A
+        INNER JOIN
+    Department D ON A.DepartmentID = D.DepartmentID
+    
 -- Question 2: Viết lệnh để lấy ra thông tin các account được tạo sau ngày 20/03/2020
 SELECT		*
 FROM		`Account`
@@ -58,7 +66,7 @@ GROUP BY	A.QuestionID
 HAVING		COUNT(A.QuestionID) =	(SELECT 	MAX(CountQ)
 									 FROM		(SELECT 		COUNT(A.QuestionID) AS CountQ
 												FROM			Answer A
-												RIGHT JOIN  Question Q ON A.QuestionID = Q.QuestionID
+												RIGHT JOIN      Question Q ON A.QuestionID = Q.QuestionID
 												GROUP BY		A.QuestionID) AS MaxCountQ);
 
 -- Question 9: Thống kê số lượng account trong mỗi group
@@ -93,7 +101,7 @@ FROM
         department d
     CROSS JOIN `position` p
     WHERE
-        p.position_name IN ('Developer' , 'Tester', 'Scrum Master', 'Project Manager')
+        p.PositionName IN ('Developer' , 'Tester', 'Scrum Master', 'Project Manager')
     ORDER BY d.DepartmentID , p.PositionID) AS t1
         LEFT JOIN
     (SELECT

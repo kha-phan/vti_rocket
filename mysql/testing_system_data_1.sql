@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS TestingSystem;
-CREATE DATABASE TestingSystem;
+DROP DATABASE IF EXISTS TestingSystem1;
+CREATE DATABASE TestingSystem1;
 USE TestingSystem1;
 
 /* ======TẠO BẢNG DỮ LIỆU (Q1)========*/

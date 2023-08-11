@@ -4,7 +4,7 @@ USE	TestingSystem1;
 
 -- Question 3: Viết lệnh để lấy ra danh sách nhân viên (name) có skill Java
 SELECT 	ET.Employee_Number, ET.Employee_Name, ET.Department_Number, EST.Skill_Code
-FROM	Employee_Table ET RIGHT JOIN Employee_Skill_Table EST
+FROM	Employee_Table ET JOIN Employee_Skill_Table EST
 ON		ET.Employee_Number = EST.Employee_Number
 WHERE	EST.Skill_Code = 'Java';
 
@@ -24,7 +24,7 @@ ORDER BY	D.Department_Number ASC;
 
 -- Question 6: Viết lệnh để lấy ra danh sách nhân viên có > 1 skills.
 SELECT 		ET.*, COUNT(EST.Employee_Number) AS TOTAL
-FROM		Employee_Table ET RIGHT JOIN Employee_Skill_Table EST
+FROM		Employee_Table ET JOIN Employee_Skill_Table EST
 ON			ET.Employee_Number = EST.Employee_Number
 GROUP BY	ET.Employee_Number
 HAVING 		COUNT(EST.Employee_Number)>1;

@@ -17,7 +17,7 @@ FROM
 -- Question 2: Viết lệnh để lấy ra thông tin các account được tạo sau ngày 20/03/2020
 SELECT		*
 FROM		`Account`
-WHERE		CreateDate < '2020-03-20';
+WHERE		CreateDate > '2020-03-20';
 
 -- Question 3: Viết lệnh để lấy ra tất cả các developer
 SELECT		*
@@ -133,11 +133,11 @@ FROM 		`Account` A
 JOIN 		GroupAccount GA ON A.AccountID = GA.AccountID
 WHERE 		GA.GroupID = 1;
 
--- b) Lấy các account thuộc nhóm thứ 3
+-- b) Lấy các account thuộc nhóm thứ 2
 SELECT 		A.FullName
 FROM 		`Account` A
 JOIN 		GroupAccount GA ON A.AccountID = GA.AccountID
-WHERE 		GA.GroupID = 3;
+WHERE 		GA.GroupID = 2;
 
 -- c) Ghép 2 kết quả từ câu a) và câu b) sao cho không có record nào trùng nhau
 SELECT 		A.FullName
@@ -148,32 +148,32 @@ UNION
 SELECT 		A.FullName
 FROM 		`Account` A
 JOIN 		GroupAccount GA ON A.AccountID = GA.AccountID
-WHERE 		GA.GroupID = 3;
+WHERE 		GA.GroupID = 2;
 
 -- Question 18:
--- a) Lấy các group có lớn hơn bằng 3 thành viên
+-- a) Lấy các group có lớn hơn bằng 5 thành viên
 SELECT 		G.GroupName, COUNT(1) AS so_luong
 FROM 		`Group` G
 JOIN 		GroupAccount GA ON G.GroupID = GA.GroupID
 GROUP BY	GA.GroupID
-HAVING 		so_luong >= 3;
+HAVING 		so_luong >= 5;
 
 -- b) Lấy các group có nhỏ hơn 7 thành viên
 SELECT 		G.GroupName, COUNT(1) AS so_luong
 FROM 		`Group` G
 JOIN 		GroupAccount GA ON G.GroupID = GA.GroupID
 GROUP BY	GA.GroupID
-HAVING 		so_luong <= 7;
+HAVING 		so_luong < 7;
 
 -- c) Ghép 2 kết quả từ câu a) và câu b)
 SELECT 		G.GroupName, COUNT(1) AS so_luong
 FROM 		`Group` G
 JOIN 		GroupAccount GA ON G.GroupID = GA.GroupID
 GROUP BY	GA.GroupID
-HAVING 		so_luong >= 3
+HAVING 		so_luong >= 5
 UNION
 SELECT 		G.GroupName, COUNT(1) AS so_luong
 FROM 		`Group` G
 JOIN 		GroupAccount GA ON G.GroupID = GA.GroupID
 GROUP BY	GA.GroupID
-HAVING 		so_luong <= 7;
+HAVING 		so_luong < 7;

@@ -56,8 +56,8 @@ INNER JOIN 	GroupAccount GA ON A.AccountID = GA.AccountID
 GROUP BY	A.AccountID
 HAVING		COUNT(GA.AccountID) = (SELECT * FROM MAX_COUNT_ACCOUNTID);
 
--- Question 3: Tạo view có chứa câu hỏi có những content quá dài (content quá 18 từ
--- được coi là quá dài) và xóa nó đi (De cu la 300 tu nhung do thiet ke db tu dau nen sua lai 18 tu de demo
+-- Question 3: Tạo view có chứa câu hỏi có những content quá dài (content quá 18 từ được coi là quá dài)
+-- và xóa nó đi (De cu la 300 tu nhung do thiet ke db tu dau nen sua lai 18 tu de demo
 CREATE OR REPLACE VIEW vw_ContenTren18Tu
 AS
 	SELECT 	LENGTH(Content)
@@ -66,6 +66,8 @@ AS
 
 SELECT 	*
 FROM 	vw_ContenTren18Tu;
+
+DROP VIEW vw_ContenTren18Tu;
 
 
 -- Question 4: Tạo view có chứa danh sách các phòng ban có nhiều nhân viên nhất
@@ -126,7 +128,7 @@ SELECT 	*
 FROM 	vw_QuesHoNguyen;
 
 
--- Comman Table Expression
+-- CTE
 WITH QuesHoNguyen AS
 (
 	SELECT 		Q.*, A.FullName

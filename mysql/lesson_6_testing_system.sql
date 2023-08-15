@@ -1,6 +1,19 @@
 USE TestingSystem;
 /*============================== TRUY VẤN DỮ LIỆU  =============================*/
 /*======================================================================================*/
+
+/*
+DETERMINISTIC
+READS SQL DATA
+
+By default, for a CREATE FUNCTION statement to be accepted, at least one of DETERMINISTIC, NO SQL, or READS SQL DATA must be specified explicitly. Otherwise an error occurs:
+
+ERROR 1418 (HY000): This function has none of DETERMINISTIC, NO SQL,
+or READS SQL DATA in its declaration and binary logging is enabled
+(you *might* want to use the less safe log_bin_trust_function_creators
+variable)
+*/
+
 -- Question 1: Tạo store để người dùng nhập vào tên phòng ban và in ra tất cả các account thuộc phòng ban đó
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_accountOfDepartment;

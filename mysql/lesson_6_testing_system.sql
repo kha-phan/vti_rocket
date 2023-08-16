@@ -56,7 +56,7 @@ BEGIN
 
 	SELECT		COUNT(TypeID)
     FROM		Question
-    WHERE		MONTH(CreateDate) = Month(NOW());
+    WHERE		MONTH(CreateDate) = Month(NOW()) AND YEAR(CreateDate) = YEAR(NOW());
 
 END$$
 DELIMITER ;
@@ -136,7 +136,7 @@ DELIMITER ;
 
 -- Question 7: Viết 1 store cho phép người dùng nhập vào thông tin fullName, email và
 -- trong store sẽ tự động gán
--- username sẽ giống email nhưng bỏ phần @..mail đi
+-- username sẽ giống email nhưng bỏ phần @..mail đi abc@gmail.com
 -- positionID: sẽ có default là developer
 -- departmentID: sẽ được cho vào 1 phòng chờ
 -- Sau đó in ra kết quả tạo thành công
@@ -162,21 +162,26 @@ DELIMITER ;
 
 -- Question 8: Viết 1 store cho phép người dùng nhập vào Essay hoặc Multiple-Choice
 -- để thống kê câu hỏi essay hoặc multiple-choice nào có content dài nhất
-DROP PROCEDURE IF EXISTS sp_maxContentWithTypeName;
+DROP PROCEDURE IF EXISTS sp_maxContentWithTypeID;
 DELIMITER $$
 CREATE PROCEDURE sp_maxContentWithTypeID(IN in_TypeName VARCHAR(15))
+DETERMINISTIC
+READS SQL DATA
 BEGIN
 	IF (in_TypeName = 'Essay') THEN
-		SELECT	Content, MAX(LENGTH(Content))
+		SELECT	Content, LENGTH(Content)
 		FROM	Question
-		WHERE	TypeID = 1;
+		WHERE	TypeID = 1 AND LENGTH(Content) = (SELECT MAX(q.count_content) FROM (SELECT LENGTH(content) as count_content FROM Question WHERE TypeID = 1) as q);
 	ELSEIF (in_TypeName = 'Multiple-Choice') THEN
-		SELECT	Content, MAX(LENGTH(Content))
+		SELECT	Content, LENGTH(Content)
 		FROM	Question
-		WHERE	TypeID = 2;
+		WHERE	TypeID = 2 AND sLENGTH(Content) = (SELECT MAX(q.count_content) FROM (SELECT LENGTH(content) as count_content FROM Question WHERE TypeID = 2) as q);
 	END IF;
 END$$
 DELIMITER ;
+
+
+CALL sp_maxContentWithTypeID('Multiple-Choice');
 
 
 -- Question 9: Viết 1 store cho phép người dùng xóa exam dựa vào ID
@@ -260,43 +265,27 @@ DELIMITER ;
 -- tháng gần đây nhất (nếu tháng nào không có thì sẽ in ra là "không có câu hỏi nào
 -- trong tháng")
 /* -- Hàm DATE_SUB trả về một ngày mà sau đó một khoảng thời gian/ngày nhất định đã bị trừ */
-
-DROP PROCEDURE IF EXISTS sp_CountQuesBefore6Month;
+DROP PROCEDURE IF EXISTS sp_CountQuesPrevious6Month;
 DELIMITER $$
-CREATE PROCEDURE sp_CountQuesBefore6Month()
-    BEGIN
-        WITH CTE_Talbe_6MonthBefore AS (
-            SELECT MONTH(DATE_SUB(NOW(), INTERVAL 5 MONTH)) AS MONTH,
-                YEAR(DATE_SUB(NOW(), INTERVAL 5 MONTH)) AS `YEAR`
-            UNION
-            SELECT MONTH(DATE_SUB(NOW(), INTERVAL 4 MONTH)) AS MONTH,
-                YEAR(DATE_SUB(NOW(), INTERVAL 4 MONTH)) AS `YEAR`
-            UNION
-            SELECT MONTH(DATE_SUB(NOW(), INTERVAL 3 MONTH)) AS MONTH,
-                YEAR(DATE_SUB(NOW(), INTERVAL 3 MONTH)) AS `YEAR`
-            UNION
-            SELECT MONTH(DATE_SUB(NOW(), INTERVAL 2 MONTH)) AS MONTH,
-                YEAR(DATE_SUB(NOW(), INTERVAL 2 MONTH)) AS `YEAR`
-            UNION
-            SELECT MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH)) AS MONTH,
-                YEAR(DATE_SUB(NOW(), INTERVAL 1 MONTH)) AS `YEAR`
-            UNION
-            SELECT MONTH(NOW()) AS MONTH, YEAR(NOW()) AS `YEAR`
-        )
-
-        SELECT M.MONTH,M.YEAR,
-            CASE
-                WHEN COUNT(QuestionID) = 0 THEN 'không có câu hỏi nào trong tháng'
-            ELSE COUNT(QuestionID)
-            END AS SL
-        FROM CTE_Talbe_6MonthBefore M
-            LEFT JOIN (SELECT * FROM question where CreateDate >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
-                AND CreateDate <= now()) AS Sub_Question ON M.MONTH = MONTH(CreateDate)
-
-        GROUP BY M.MONTH
-        ORDER BY M.MONTH ASC;
-
-    END$$
+CREATE PROCEDURE sp_CountQuesPrevious6Month()
+BEGIN
+		SELECT Previous6Month.MONTH, COUNT(QuestionID) AS COUNT
+		FROM
+		(
+			SELECT MONTH(CURRENT_DATE - INTERVAL 5 MONTH) AS MONTH
+			UNION
+			SELECT MONTH(CURRENT_DATE - INTERVAL 4 MONTH) AS MONTH
+			UNION
+			SELECT MONTH(CURRENT_DATE - INTERVAL 3 MONTH) AS MONTH
+			UNION
+			SELECT MONTH(CURRENT_DATE - INTERVAL 2 MONTH) AS MONTH
+			UNION
+			SELECT MONTH(CURRENT_DATE - INTERVAL 1 MONTH) AS MONTH
+			UNION
+			SELECT MONTH(CURRENT_DATE - INTERVAL 0 MONTH) AS MONTH
+        ) AS Previous6Month
+		LEFT JOIN Question ON Previous6Month.MONTH = MONTH(CreateDate)
+		GROUP BY Previous6Month.MONTH
+		ORDER BY Previous6Month.MONTH ASC;
+END$$
 DELIMITER ;
-
-CALL sp_CountQuesBefore6Month;

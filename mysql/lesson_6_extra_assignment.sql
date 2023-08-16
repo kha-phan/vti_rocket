@@ -44,7 +44,7 @@ BEGIN
 
 	SELECT 		EmployeeID, CONCAT(EmployeeLastName, ' ', EmployeeFirstName)
     FROM		Employee
-    WHERE		EmployeeID NOT IN (SELECT EmployeeID FROM Work_Done);
+    WHERE		in_EmployeeID = EmployeeID AND EmployeeID NOT IN (SELECT EmployeeID FROM Work_Done);
 
 END$$
 DELIMITER ;

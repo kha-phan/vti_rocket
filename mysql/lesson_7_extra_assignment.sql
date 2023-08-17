@@ -28,6 +28,8 @@ VALUE						  (	1		    ,	1		,	'2019-06-05'	, '2019-08-07'		        ,	'Không hợ
 
 SELECT * FROM `Project_Modules`;
 
+-- DISABLE TRIGGER trig_Not_InsertInvalidProjectModule ON Project_Modules;
+
 /* Exercise 2: View
 Trong database phần Assignment 3, Tạo 1 VIEW để lấy ra tất cả các thực tập sinh là
 ET, 1 ET thực tập sinh là những người đã vượt qua bài test đầu vào và thỏa mãn số

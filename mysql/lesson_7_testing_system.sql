@@ -20,6 +20,8 @@ INSERT INTO `Group`	(  GroupName		, CreatorID		, CreateDate)
 VALUE 				(N'Testing System'	,   12			,'2019-03-05');
 SELECT * FROM `Group`;
 
+-- DISABLE TRIGGER trig_Not_InsertGroup1YearPrevious ON Group;
+
 -- Question 2: Tạo trigger Không cho phép người dùng thêm bất kỳ user nào vào
 -- department "Sale" nữa, khi thêm thì hiện ra thông báo "Department "Sale" cannot add
 -- more user"

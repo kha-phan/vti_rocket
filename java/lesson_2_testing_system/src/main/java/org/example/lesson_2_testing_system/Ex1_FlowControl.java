@@ -138,6 +138,7 @@ public class Ex1_FlowControl {
 			break;
 		case 3:
 			System.out.println("Nhóm có ba thành viên");
+			break;
 		default:
 			System.out.println("Nhóm có nhiều thành viên");
 		}

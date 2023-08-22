@@ -18,7 +18,7 @@ public class Ex4_RandomNumber {
 		// Q3
 		String[] names = { "Nguyen Mai", "Van Linh", "Hoa Lan" };
 		int i = random.nextInt(names.length);
-		System.out.println(names[1]);
+		System.out.println(names[i]);
 
 		// Q4.
 		int minDay = (int) LocalDate.of(1995, 7, 24).toEpochDay();
